@@ -21,7 +21,7 @@ Qt Widgets + QPainter
 
 ### Divide 除法
 
-## Did And Todo
+## Did And Todo 功能
 
 - [x] 基本加法
 - [x] 加法（小进位 1）
