@@ -2,6 +2,10 @@
 
 一个支持为 1000 内简单四则运算生成竖式的软件。
 
+## 架构
+
+Qt Widgets + QPainter
+
 ## Did And Todo
 
 - [x] 基本加法
