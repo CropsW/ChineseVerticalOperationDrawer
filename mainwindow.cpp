@@ -111,7 +111,7 @@ void MainWindow::showPaint() {
                        QString::number(ui->spinBox->value()) + "-" +
                            QString::number(ui->spinBox_2->value()));
       break;
-    case 2:  // multiple
+    case 2:  // multiply
       painter.drawText(width() / 2, height() / 2,
                        QString::number(ui->spinBox->value()) + "*" +
                            QString::number(ui->spinBox_2->value()));
