@@ -9,11 +9,16 @@ Qt Widgets + QPainter
 ## Idea 想法
 
 每次点击按钮：调用 `eventFilter` 将 QPainter 的范围限定在 `paint_widget`。
+所有的绘图都在 `showPaint` 函数。
 
 ### Plus 加法
 
 1. 先获取 `spin_box` 和 `spin_box_2` 的值，在根据大小分别赋值给 `biggerInput` 和 `smallerInput`。
-2. 使用整型变量 `curX` 和 `curY` 来存储画笔 `painter` 当前的位置（以后可能会考虑换成 `QPoint` 类型的变量的存储 `painter` 当前的位置）。
+2. 使用整型变量 `curX` 和 `curY` 来存储画笔 `painter` 当前的位置（以后可能会考虑换成 `QPoint` 类型的变量来存储 `painter` 当前的位置）。
+3. 初始化 `QFont` 类型的字体配置：
+   - `font`：最普通的字体。
+   - `errFont`：表示错误的字体，如`除数为0的除法算式没有意义！`使用的就是这种字体。
+   - `smFont`：用来表示进位、退位的字体。
 
 ### Subtract 减法
 
