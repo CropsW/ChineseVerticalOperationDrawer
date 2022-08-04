@@ -43,3 +43,6 @@ else()
 endif()
 
 target_link_libraries(ChineseVerticalOperationDrawer PRIVATE Qt5::Widgets)
+
+target_include_directories(ChineseVerticalOperationDrawer PRIVATE "${CMAKE_BINARY_DIR}/ChineseVerticalOperationDrawer_autogen/include")
+
