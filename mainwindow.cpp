@@ -50,10 +50,11 @@ int MainWindow::biggestNumInQList(QList<int> intList)
 void MainWindow::showPaint()
 {
 
-  QFont font, smFont;
+  QFont font, smFont, mutliSignFont;
   QPainter painter(ui->paint_widget);
   font.setPixelSize(34);
   smFont.setPixelSize(14);
+  mutliSignFont.setPixelSize(20);
   painter.setPen(Qt::black);
   painter.setFont(font);
   if (ui->spinBox->value() < ui->spinBox_2->value())
@@ -69,8 +70,7 @@ void MainWindow::showPaint()
       smallerInput = ui->spinBox->value() == biggerInput
                          ? ui->spinBox_2->value()
                          : ui->spinBox->value(),
-      curX = width() / 2, curY = 40, result,
-      carryBit = 0;
+      curX = width() / 2, curY = 40, result;
   switch (ui->comboBox->currentIndex())
   {
   case 0: // plus
@@ -81,20 +81,14 @@ void MainWindow::showPaint()
          (getDigitOfUnsignedNum(smallerInput == 1))) ||
         ((getDigitOfUnsignedNum(biggerInput) == 3) &&
          (getDigitOfUnsignedNum(smallerInput) == 2)))
-    {
       curX += font.pixelSize() / 2;
-    }
     if ((getDigitOfUnsignedNum(biggerInput) == 3) &&
         (getDigitOfUnsignedNum(smallerInput) == 1))
-    {
       curX += font.pixelSize();
-    }
     if ((getDigitOfUnsignedNum(biggerInput) ==
          getDigitOfUnsignedNum(smallerInput)) &&
         (getDigitOfUnsignedNum(smallerInput) == 2))
-    {
       curX -= font.pixelSize() / 2;
-    }
     painter.drawText(curX, curY, QString::number(smallerInput));
 
     //      show result
@@ -102,12 +96,11 @@ void MainWindow::showPaint()
     curY += 10 + font.pixelSize();
     for (int i = 1; i <= getDigitOfUnsignedNum(result); i++)
     {
-      carryBit = (getOneBitOfUnsignedNumFromRight(biggerInput, i) +
-                  getOneBitOfUnsignedNumFromRight(smallerInput, i)) > 9;
       painter.drawText(
           curX, curY - 10,
           QString::number(getOneBitOfUnsignedNumFromRight(result, i)));
-      if (bool(carryBit))
+      if ((getOneBitOfUnsignedNumFromRight(biggerInput, i) +
+           getOneBitOfUnsignedNumFromRight(smallerInput, i)) > 9)
       {
         painter.setFont(smFont);
         painter.drawText(curX - 3, curY - font.pixelSize() - 6, "1");
@@ -133,20 +126,14 @@ void MainWindow::showPaint()
          (getDigitOfUnsignedNum(smallerInput == 1))) ||
         ((getDigitOfUnsignedNum(biggerInput) == 3) &&
          (getDigitOfUnsignedNum(smallerInput) == 2)))
-    {
       curX += font.pixelSize() / 2;
-    }
     if ((getDigitOfUnsignedNum(biggerInput) == 3) &&
         (getDigitOfUnsignedNum(smallerInput) == 1))
-    {
       curX += font.pixelSize();
-    }
     if ((getDigitOfUnsignedNum(biggerInput) ==
          getDigitOfUnsignedNum(smallerInput)) &&
         (getDigitOfUnsignedNum(smallerInput) == 2))
-    {
       curX -= font.pixelSize() / 2;
-    }
     painter.drawText(curX, curY, QString::number(smallerInput));
 
     //      show result
@@ -154,12 +141,11 @@ void MainWindow::showPaint()
     curY += 10 + font.pixelSize();
     for (int i = 1; i <= getDigitOfUnsignedNum(result); i++)
     {
-      carryBit = int(getOneBitOfUnsignedNumFromRight(biggerInput, i) < getOneBitOfUnsignedNumFromRight(smallerInput, i));
       painter.drawText(
           curX, curY - 10,
           QString::number(getOneBitOfUnsignedNumFromRight(result, i)));
       curX -= font.pixelSize() / 2;
-      if (bool(carryBit))
+      if (getOneBitOfUnsignedNumFromRight(biggerInput, i) < getOneBitOfUnsignedNumFromRight(smallerInput, i))
       {
         curY -= font.pixelSize() * 3;
         painter.drawPoint(curX, curY);
@@ -170,9 +156,7 @@ void MainWindow::showPaint()
       }
     }
     if (getDigitOfUnsignedNum(biggerInput) > getDigitOfUnsignedNum(result))
-    {
       curX -= font.pixelSize() / 2 * (getDigitOfUnsignedNum(biggerInput) - getDigitOfUnsignedNum(result));
-    }
     //      draw subtract sign
     curY -= font.pixelSize() + 7;
     painter.drawText(curX, curY, "-");
@@ -185,6 +169,54 @@ void MainWindow::showPaint()
     break;
   case 2: // multiply
     result = biggerInput * smallerInput;
+    painter.drawText(curX, curY, QString::number(biggerInput));
+    curY += font.pixelSize();
+    if (((getDigitOfUnsignedNum(biggerInput) == 2) &&
+         (getDigitOfUnsignedNum(smallerInput == 1))) ||
+        ((getDigitOfUnsignedNum(biggerInput) == 3) &&
+         (getDigitOfUnsignedNum(smallerInput) == 2)))
+      curX += font.pixelSize() / 2;
+    if ((getDigitOfUnsignedNum(biggerInput) == 3) &&
+        (getDigitOfUnsignedNum(smallerInput) == 1))
+      curX += font.pixelSize();
+    if ((getDigitOfUnsignedNum(biggerInput) ==
+         getDigitOfUnsignedNum(smallerInput)) &&
+        (getDigitOfUnsignedNum(smallerInput) == 2))
+      curX -= font.pixelSize() / 2;
+    painter.drawText(curX, curY, QString::number(smallerInput));
+
+    if (smallerInput > 9)
+    { // at least 2 digits
+    }
+    else
+    { // only 1 digit
+      // show result
+      curX += font.pixelSize() / 2 * (getDigitOfUnsignedNum(smallerInput) - 1);
+      curY += 10 + font.pixelSize();
+      for (int i = 1; i <= getDigitOfUnsignedNum(result); i++)
+      {
+        painter.drawText(
+            curX, curY - 10,
+            QString::number(getOneBitOfUnsignedNumFromRight(result, i)));
+
+        curX -= font.pixelSize() / 2;
+        if (getOneBitOfUnsignedNumFromRight(biggerInput, i) * getOneBitOfUnsignedNumFromRight(biggerInput, i) > 9)
+        {
+        }
+      }
+      //      draw multi sign
+      curY -= font.pixelSize() + 7;
+      painter.setFont(mutliSignFont);
+      painter.drawText(curX, curY, "×");
+      //      draw result line
+      if (getDigitOfUnsignedNum(biggerInput) > getDigitOfUnsignedNum(result))
+        curX -= font.pixelSize() / 2 * (getDigitOfUnsignedNum(biggerInput) - getDigitOfUnsignedNum(result));
+      curY += 2;
+      painter.drawLine(
+          curX - 5, curY,
+          curX + font.pixelSize() / 2 * (getDigitOfUnsignedNum(result) + 1) + 5,
+          curY);
+    }
     break;
   case 3: // devide
     if (ui->spinBox_2->value() == 0)
