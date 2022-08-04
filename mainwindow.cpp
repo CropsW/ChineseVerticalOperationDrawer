@@ -103,9 +103,7 @@ void MainWindow::showPaint()
     for (int i = 1; i <= getDigitOfUnsignedNum(result); i++)
     {
       carryBit = (getOneBitOfUnsignedNumFromRight(biggerInput, i) +
-                  getOneBitOfUnsignedNumFromRight(smallerInput, i)) > 9
-                     ? 1
-                     : 0;
+                  getOneBitOfUnsignedNumFromRight(smallerInput, i)) > 9;
       painter.drawText(
           curX, curY - 10,
           QString::number(getOneBitOfUnsignedNumFromRight(result, i)));
@@ -129,6 +127,61 @@ void MainWindow::showPaint()
     break;
   case 1: // subtract
     result = biggerInput - smallerInput;
+    painter.drawText(curX, curY, QString::number(biggerInput));
+    curY += font.pixelSize();
+    if (((getDigitOfUnsignedNum(biggerInput) == 2) &&
+         (getDigitOfUnsignedNum(smallerInput == 1))) ||
+        ((getDigitOfUnsignedNum(biggerInput) == 3) &&
+         (getDigitOfUnsignedNum(smallerInput) == 2)))
+    {
+      curX += font.pixelSize() / 2;
+    }
+    if ((getDigitOfUnsignedNum(biggerInput) == 3) &&
+        (getDigitOfUnsignedNum(smallerInput) == 1))
+    {
+      curX += font.pixelSize();
+    }
+    if ((getDigitOfUnsignedNum(biggerInput) ==
+         getDigitOfUnsignedNum(smallerInput)) &&
+        (getDigitOfUnsignedNum(smallerInput) == 2))
+    {
+      curX -= font.pixelSize() / 2;
+    }
+    painter.drawText(curX, curY, QString::number(smallerInput));
+
+    //      show result
+    curX += font.pixelSize() / 2 * (getDigitOfUnsignedNum(smallerInput) - 1);
+    curY += 10 + font.pixelSize();
+    for (int i = 1; i <= getDigitOfUnsignedNum(result); i++)
+    {
+      carryBit = int(getOneBitOfUnsignedNumFromRight(biggerInput, i) < getOneBitOfUnsignedNumFromRight(smallerInput, i));
+      painter.drawText(
+          curX, curY - 10,
+          QString::number(getOneBitOfUnsignedNumFromRight(result, i)));
+      curX -= font.pixelSize() / 2;
+      if (bool(carryBit))
+      {
+        curY -= font.pixelSize() * 3;
+        painter.drawPoint(curX, curY);
+        painter.setBrush(Qt::black);
+        painter.drawEllipse(curX + font.pixelSize() / 4 - 2, curY - 5, 4, 4);
+        painter.setBrush(Qt::NoBrush);
+        curY += font.pixelSize() * 3;
+      }
+    }
+    if (getDigitOfUnsignedNum(biggerInput) > getDigitOfUnsignedNum(result))
+    {
+      curX -= font.pixelSize() / 2 * (getDigitOfUnsignedNum(biggerInput) - getDigitOfUnsignedNum(result));
+    }
+    //      draw subtract sign
+    curY -= font.pixelSize() + 7;
+    painter.drawText(curX, curY, "-");
+    //      draw result line
+    curY += 2;
+    painter.drawLine(
+        curX - 5, curY,
+        curX + font.pixelSize() / 2 * (getDigitOfUnsignedNum(biggerInput) + 1) + 5,
+        curY);
     break;
   case 2: // multiply
     painter.drawText(width() / 2, height() / 2,
