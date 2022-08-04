@@ -49,11 +49,9 @@ void MainWindow::showPaint() {
                          : ui->spinBox->value(),
       curX = width() / 2, curY = 40, result = biggerInput + smallerInput,
       carryBit = 0;
-  QFont font, errFont, smFont;
+  QFont font, smFont;
   QPainter painter(ui->paint_widget);
   font.setPixelSize(34);
-  errFont.setPixelSize(34);
-  errFont.setBold(true);
   smFont.setPixelSize(14);
   painter.setPen(Qt::black);
   painter.setFont(font);
@@ -118,7 +116,7 @@ void MainWindow::showPaint() {
       break;
     case 3:  // devide
       if (ui->spinBox_2->value() == 0) {
-        painter.setPen(QColor(255, 0, 0));
+        painter.setPen(Qt::red);
         painter.drawText(0, 0, this->width(), this->height(), Qt::AlignCenter,
                          "除数为0的除法算式没有意义！");
         return;
