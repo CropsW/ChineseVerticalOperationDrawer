@@ -50,6 +50,19 @@ int MainWindow::biggestNumInQList(QList<int> intList)
 void MainWindow::showPaint()
 {
 
+  QFont font, smFont;
+  QPainter painter(ui->paint_widget);
+  font.setPixelSize(34);
+  smFont.setPixelSize(14);
+  painter.setPen(Qt::black);
+  painter.setFont(font);
+  if (ui->spinBox->value() < ui->spinBox_2->value())
+  {
+    painter.setPen(QColor(255, 128, 0));
+    painter.drawText(0, 0, this->width(), this->height(), Qt::AlignCenter,
+                     "暂不支持负数运算！");
+    return;
+  }
   int biggerInput = ui->spinBox->value() > ui->spinBox_2->value()
                         ? ui->spinBox->value()
                         : ui->spinBox_2->value(),
@@ -58,12 +71,6 @@ void MainWindow::showPaint()
                          : ui->spinBox->value(),
       curX = width() / 2, curY = 40, result,
       carryBit = 0;
-  QFont font, smFont;
-  QPainter painter(ui->paint_widget);
-  font.setPixelSize(34);
-  smFont.setPixelSize(14);
-  painter.setPen(Qt::black);
-  painter.setFont(font);
   switch (ui->comboBox->currentIndex())
   {
   case 0: // plus
@@ -121,7 +128,7 @@ void MainWindow::showPaint()
         curY);
     break;
   case 1: // subtract
-    result = biggerInput;
+    result = biggerInput - smallerInput;
     break;
   case 2: // multiply
     painter.drawText(width() / 2, height() / 2,
