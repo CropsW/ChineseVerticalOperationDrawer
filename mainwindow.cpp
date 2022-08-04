@@ -187,6 +187,17 @@ void MainWindow::showPaint()
 
     if (smallerInput > 9)
     { // at least 2 digits
+      int results[getDigitOfUnsignedNum(smallerInput)];
+      // calc results
+      for (int i = 0; i < getDigitOfUnsignedNum(smallerInput); i++)
+        results[i] = biggerInput * getOneBitOfUnsignedNumFromRight(smallerInput, i + 1);
+      curX += font.pixelSize();
+      painter.drawPoint(curX, curY);
+      for (int i = 0; i < getDigitOfUnsignedNum(smallerInput); i++)
+      {
+        curY += font.pixelSize();
+        // TODO
+      }
     }
     else
     { // only 1 digit
