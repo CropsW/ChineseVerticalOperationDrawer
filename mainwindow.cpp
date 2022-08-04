@@ -184,9 +184,7 @@ void MainWindow::showPaint()
         curY);
     break;
   case 2: // multiply
-    painter.drawText(width() / 2, height() / 2,
-                     QString::number(ui->spinBox->value()) + "*" +
-                         QString::number(ui->spinBox_2->value()));
+    result = biggerInput * smallerInput;
     break;
   case 3: // devide
     if (ui->spinBox_2->value() == 0)
