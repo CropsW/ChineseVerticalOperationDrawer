@@ -33,7 +33,7 @@ private:
   bool eventFilter(QObject *watched, QEvent *event);
   void showPaint();
   static int getDigitOfUnsignedNum(unsigned n);
-  static int getOneBitOfUnsignedNumFromRight(unsigned x, unsigned y);
+  static int getOneBitOfUnsignedNumFromRight(unsigned int x, unsigned int y);
   static int biggestNumInQList(QList<int> intList);
 };
 #endif // MAINWINDOW_H

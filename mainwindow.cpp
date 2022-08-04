@@ -200,8 +200,11 @@ void MainWindow::showPaint()
             QString::number(getOneBitOfUnsignedNumFromRight(result, i)));
 
         curX -= font.pixelSize() / 2;
-        if (getOneBitOfUnsignedNumFromRight(biggerInput, i) * getOneBitOfUnsignedNumFromRight(biggerInput, i) > 9)
+        if (getOneBitOfUnsignedNumFromRight(biggerInput, i) * smallerInput > 9)
         {
+          painter.setFont(smFont);
+          painter.drawText(curX - 3 + font.pixelSize() / 2, curY - font.pixelSize() - 6, QString::number(getOneBitOfUnsignedNumFromRight(getOneBitOfUnsignedNumFromRight(biggerInput, i) * smallerInput, 2)));
+          painter.setFont(font);
         }
       }
       //      draw multi sign
