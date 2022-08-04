@@ -19,12 +19,13 @@ Qt Widgets + QPainter
 
 ### Plus 加法
 
-Does'n write anything.
-Why? Not why.
+没有写东西……
+因为我懒~
 
 ### Subtract 减法
 
-TODO
+没有写东西……
+因为我懒~
 
 ### Multiply 乘法
 
@@ -38,7 +39,7 @@ TODO
 
 - [x] 基本加法
 - [x] 加法（小进位 1）
-- [ ] 减法
+- [x] 减法
 - [ ] 乘法
 - [ ] 除法
   - [x] 报错：`除数为0的除法算式没有意义！`
