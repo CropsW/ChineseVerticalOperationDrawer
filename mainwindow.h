@@ -11,22 +11,24 @@
 #include "ui_mainwindow.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
+namespace Ui
+{
+  class MainWindow;
 }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow
+{
   Q_OBJECT
 
- public:
+public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
- private slots:
+private slots:
   void on_pushButton_clicked();
 
- private:
+private:
   Ui::MainWindow *ui;
   bool eventFilter(QObject *watched, QEvent *event);
   void showPaint();
@@ -34,4 +36,4 @@ class MainWindow : public QMainWindow {
   static int getOneBitOfUnsignedNumFromRight(unsigned x, unsigned y);
   static int biggestNumInQList(QList<int> intList);
 };
-#endif  // MAINWINDOW_H
+#endif // MAINWINDOW_H
