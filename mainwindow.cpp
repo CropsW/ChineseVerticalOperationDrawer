@@ -57,7 +57,7 @@ void MainWindow::showPaint()
   mutliSignFont.setPixelSize(20);
   painter.setPen(Qt::black);
   painter.setFont(font);
-  if (ui->spinBox->value() < ui->spinBox_2->value())
+  if (ui->spinBox->value() < ui->spinBox_2->value() && ui->comboBox->currentIndex() == 1)
   {
     painter.setPen(QColor(255, 128, 0));
     painter.drawText(0, 0, this->width(), this->height(), Qt::AlignCenter,
@@ -196,7 +196,7 @@ void MainWindow::showPaint()
       for (int i = 0; i < getDigitOfUnsignedNum(smallerInput); i++)
       {
         curY += font.pixelSize();
-        // TODO
+        painter.drawPoint(curX, curY);
       }
     }
     else
