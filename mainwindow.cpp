@@ -211,6 +211,59 @@ void MainWindow::showPaint()
         }
         curX -= font.pixelSize() / 2;
       }
+
+      // draw plus sign
+      curX -= font.pixelSize() / 2 * (getDigitOfUnsignedNum(results[getDigitOfUnsignedNum(bNo0 > smallerInput ? smallerInput : biggerInput) - 1]) - 1);
+      curY = 40 + font.pixelSize();
+      // painter.drawPoint(curX, curY);
+      painter.setFont(mutliSignFont);
+      painter.drawText(curX, curY, "×");
+
+      // draw the 1st line and result line
+      painter.drawLines(
+          QVector<QLine>()
+          << QLine(curX - 5, curY + 2,
+                   width() / 2 +
+                       font.pixelSize() / 2 *
+                           (getDigitOfUnsignedNum(bNo0 > smallerInput
+                                                      ? biggerInput
+                                                      : smallerInput) +
+                            getHowManyEndZerosOfUnsignedNum(
+                                bNo0 > smallerInput ? smallerInput
+                                                    : biggerInput)) +
+                       5,
+                   curY + 2)
+          << QLine(curX - 5,
+                   curY + 2 +
+                       font.pixelSize() *
+                           getDigitOfUnsignedNum(clearAllendZerosOfUnsignedNum(bNo0 > smallerInput
+                                                                                   ? smallerInput
+                                                                                   : biggerInput)),
+                   width() / 2 +
+                       font.pixelSize() / 2 *
+                           (getDigitOfUnsignedNum(bNo0 > smallerInput
+                                                      ? biggerInput
+                                                      : smallerInput) +
+                            getHowManyEndZerosOfUnsignedNum(
+                                bNo0 > smallerInput ? smallerInput
+                                                    : biggerInput)) +
+                       5,
+                   curY + 2 +
+                       font.pixelSize() *
+                           getDigitOfUnsignedNum(clearAllendZerosOfUnsignedNum(bNo0 > smallerInput
+                                                                                   ? smallerInput
+                                                                                   : biggerInput))));
+
+      // show finally result
+      curY += font.pixelSize() * (getDigitOfUnsignedNum(clearAllendZerosOfUnsignedNum(bNo0 > smallerInput ? smallerInput : biggerInput)) + 1);
+      curX = width() / 2 + font.pixelSize() / 2 * (getDigitOfUnsignedNum(bNo0 > smallerInput ? biggerInput : smallerInput) + getHowManyEndZerosOfUnsignedNum(bNo0 > smallerInput ? smallerInput : biggerInput) - 1);
+      painter.drawPoint(curX, curY);
+      painter.setFont(font);
+      for (int i = 1; i <= getDigitOfUnsignedNum(result); i++)
+      {
+        painter.drawText(curX, curY, QString::number(getOneBitOfUnsignedNumFromRight(result, i)));
+        curX -= font.pixelSize() / 2;
+      }
     }
     else
     { // only 1 digit

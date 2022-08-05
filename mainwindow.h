@@ -6,7 +6,8 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QPainter>
-#include <QTime>
+#include <QLine>
+#include <QVector>
 
 #include "ui_mainwindow.h"
 
