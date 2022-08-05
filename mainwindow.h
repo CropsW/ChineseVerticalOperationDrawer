@@ -35,5 +35,7 @@ private:
   static int getDigitOfUnsignedNum(unsigned n);
   static int getOneBitOfUnsignedNumFromRight(unsigned int x, unsigned int y);
   static int biggestNumInQList(QList<int> intList);
+  static int getHowManyEndZerosOfUnsignedNum(unsigned int num);
+  static int clearAllendZerosOfUnsignedNum(unsigned int num);
 };
 #endif // MAINWINDOW_H

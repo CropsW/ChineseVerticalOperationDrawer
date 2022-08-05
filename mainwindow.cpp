@@ -4,6 +4,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
+  ui->comboBox->setCurrentIndex(2); // debug
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -47,6 +48,26 @@ int MainWindow::biggestNumInQList(QList<int> intList)
   return max;
 }
 
+int MainWindow::getHowManyEndZerosOfUnsignedNum(unsigned int num)
+{
+  int count = (num == 0);
+  for (int i = 10; i <= num; i *= 10)
+  {
+    if (num % i == 0)
+      count++;
+  }
+  return count;
+}
+
+int MainWindow::clearAllendZerosOfUnsignedNum(unsigned int num)
+{
+  while (num % 10 == 0)
+  {
+    num /= 10;
+  }
+  return num;
+}
+
 void MainWindow::showPaint()
 {
 
@@ -70,25 +91,14 @@ void MainWindow::showPaint()
       smallerInput = ui->spinBox->value() == biggerInput
                          ? ui->spinBox_2->value()
                          : ui->spinBox->value(),
-      curX = width() / 2, curY = 40, result;
+      curX = width() / 2, curY = 40, result, bNo0, tmp;
   switch (ui->comboBox->currentIndex())
   {
   case 0: // plus
     result = biggerInput + smallerInput;
     painter.drawText(curX, curY, QString::number(biggerInput));
     curY += font.pixelSize();
-    if (((getDigitOfUnsignedNum(biggerInput) == 2) &&
-         (getDigitOfUnsignedNum(smallerInput == 1))) ||
-        ((getDigitOfUnsignedNum(biggerInput) == 3) &&
-         (getDigitOfUnsignedNum(smallerInput) == 2)))
-      curX += font.pixelSize() / 2;
-    if ((getDigitOfUnsignedNum(biggerInput) == 3) &&
-        (getDigitOfUnsignedNum(smallerInput) == 1))
-      curX += font.pixelSize();
-    if ((getDigitOfUnsignedNum(biggerInput) ==
-         getDigitOfUnsignedNum(smallerInput)) &&
-        (getDigitOfUnsignedNum(smallerInput) == 2))
-      curX -= font.pixelSize() / 2;
+    curX += font.pixelSize() / 2 * (getDigitOfUnsignedNum(biggerInput) - getDigitOfUnsignedNum(smallerInput));
     painter.drawText(curX, curY, QString::number(smallerInput));
 
     //      show result
@@ -122,18 +132,7 @@ void MainWindow::showPaint()
     result = biggerInput - smallerInput;
     painter.drawText(curX, curY, QString::number(biggerInput));
     curY += font.pixelSize();
-    if (((getDigitOfUnsignedNum(biggerInput) == 2) &&
-         (getDigitOfUnsignedNum(smallerInput == 1))) ||
-        ((getDigitOfUnsignedNum(biggerInput) == 3) &&
-         (getDigitOfUnsignedNum(smallerInput) == 2)))
-      curX += font.pixelSize() / 2;
-    if ((getDigitOfUnsignedNum(biggerInput) == 3) &&
-        (getDigitOfUnsignedNum(smallerInput) == 1))
-      curX += font.pixelSize();
-    if ((getDigitOfUnsignedNum(biggerInput) ==
-         getDigitOfUnsignedNum(smallerInput)) &&
-        (getDigitOfUnsignedNum(smallerInput) == 2))
-      curX -= font.pixelSize() / 2;
+    curX += font.pixelSize() / 2 * (getDigitOfUnsignedNum(biggerInput) - getDigitOfUnsignedNum(smallerInput));
     painter.drawText(curX, curY, QString::number(smallerInput));
 
     //      show result
@@ -148,7 +147,6 @@ void MainWindow::showPaint()
       if (getOneBitOfUnsignedNumFromRight(biggerInput, i) < getOneBitOfUnsignedNumFromRight(smallerInput, i))
       {
         curY -= font.pixelSize() * 3;
-        painter.drawPoint(curX, curY);
         painter.setBrush(Qt::black);
         painter.drawEllipse(curX + font.pixelSize() / 4 - 2, curY - 5, 4, 4);
         painter.setBrush(Qt::NoBrush);
@@ -169,34 +167,49 @@ void MainWindow::showPaint()
     break;
   case 2: // multiply
     result = biggerInput * smallerInput;
-    painter.drawText(curX, curY, QString::number(biggerInput));
+
+    // put the end zero(s) of smallerInput to biggerInput
+    while (biggerInput % 10 == 0)
+    {
+      biggerInput /= 10;
+      smallerInput *= 10;
+    }
+    while (smallerInput % 10 == 0)
+    {
+      smallerInput /= 10;
+      biggerInput *= 10;
+    }
+
+    bNo0 = clearAllendZerosOfUnsignedNum(biggerInput);
+    painter.drawText(curX, curY, QString::number(bNo0 > smallerInput ? biggerInput : smallerInput));
     curY += font.pixelSize();
-    if (((getDigitOfUnsignedNum(biggerInput) == 2) &&
-         (getDigitOfUnsignedNum(smallerInput == 1))) ||
-        ((getDigitOfUnsignedNum(biggerInput) == 3) &&
-         (getDigitOfUnsignedNum(smallerInput) == 2)))
-      curX += font.pixelSize() / 2;
-    if ((getDigitOfUnsignedNum(biggerInput) == 3) &&
-        (getDigitOfUnsignedNum(smallerInput) == 1))
-      curX += font.pixelSize();
-    if ((getDigitOfUnsignedNum(biggerInput) ==
-         getDigitOfUnsignedNum(smallerInput)) &&
-        (getDigitOfUnsignedNum(smallerInput) == 2))
-      curX -= font.pixelSize() / 2;
-    painter.drawText(curX, curY, QString::number(smallerInput));
+    curX += font.pixelSize() / 2 * (getDigitOfUnsignedNum(bNo0 > smallerInput ? biggerInput : smallerInput) - getDigitOfUnsignedNum(clearAllendZerosOfUnsignedNum(bNo0 > smallerInput ? smallerInput : biggerInput)) - getHowManyEndZerosOfUnsignedNum(bNo0 > smallerInput ? biggerInput : smallerInput));
+    painter.drawText(curX, curY, QString::number(bNo0 > smallerInput ? smallerInput : biggerInput));
 
     if (smallerInput > 9)
     { // at least 2 digits
-      int results[getDigitOfUnsignedNum(smallerInput)];
+
+      int results[getDigitOfUnsignedNum(bNo0 > smallerInput ? smallerInput : biggerInput)];
       // calc results
-      for (int i = 0; i < getDigitOfUnsignedNum(smallerInput); i++)
-        results[i] = biggerInput * getOneBitOfUnsignedNumFromRight(smallerInput, i + 1);
-      curX += font.pixelSize();
-      painter.drawPoint(curX, curY);
-      for (int i = 0; i < getDigitOfUnsignedNum(smallerInput); i++)
+      for (int i = 0; i < getDigitOfUnsignedNum(bNo0 > smallerInput ? smallerInput : biggerInput); i++)
+        results[i] = clearAllendZerosOfUnsignedNum(bNo0 > smallerInput ? biggerInput : smallerInput) * getOneBitOfUnsignedNumFromRight(bNo0 > smallerInput ? smallerInput : biggerInput, i + 1);
+      curX += font.pixelSize() / 2 * (getDigitOfUnsignedNum(bNo0 > smallerInput ? smallerInput : biggerInput) - 1);
+      for (int i = 0; i < getDigitOfUnsignedNum(bNo0 > smallerInput ? smallerInput : biggerInput); i++)
       {
         curY += font.pixelSize();
-        painter.drawPoint(curX, curY);
+
+        tmp = curX;
+        for (int j = 1; j <= getDigitOfUnsignedNum(results[i]); j++)
+        {
+          if (results[i] == 0)
+          {
+            curY -= font.pixelSize();
+            break;
+          }
+          painter.drawText(tmp, curY, QString::number(getOneBitOfUnsignedNumFromRight(results[i], j)));
+          tmp -= font.pixelSize() / 2;
+        }
+        curX -= font.pixelSize() / 2;
       }
     }
     else
@@ -204,6 +217,7 @@ void MainWindow::showPaint()
       // show result
       curX += font.pixelSize() / 2 * (getDigitOfUnsignedNum(smallerInput) - 1);
       curY += 10 + font.pixelSize();
+      curX += font.pixelSize() / 2 * getHowManyEndZerosOfUnsignedNum(biggerInput);
       for (int i = 1; i <= getDigitOfUnsignedNum(result); i++)
       {
         painter.drawText(
