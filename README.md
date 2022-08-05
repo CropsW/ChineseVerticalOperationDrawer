@@ -19,17 +19,15 @@ Qt Widgets + QPainter
 
 ### Plus 加法
 
-没有写东西……
-因为我懒~
+有时间再写
 
 ### Subtract 减法
 
-没有写东西……
-因为我懒~
+有时间再写
 
 ### Multiply 乘法
 
-TODO
+有时间再写
 
 ### Divide 除法
 
